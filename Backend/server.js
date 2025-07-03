@@ -11,20 +11,20 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3076;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'postgres',
   database: process.env.DB_DATABASE || 'login',
-  password: process.env.DB_PASSWORD || 'Veera@0134',
+  password: process.env.DB_PASSWORD || 'admin123',
   port: parseInt(process.env.DB_PORT) || 5432,
 });
 
 const allowedOrigins = [
   'http://127.0.0.1:5500',
-  'http://localhost:3000'
+  'http://16.171.175.9:3076'
 ];
 
 app.use(cors({
