@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres1
+    environment:
+      POSTGRES_DB: login
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5076:5432"
+    networks:
+      - test-dashboard-net
+
+  backend:
+    build: ./Backend
+    container_name: Backend1
+    ports:
+      - "3076:3076"
+    depends_on:
+      - postgres
+    env_file:
+      - ./Backend/server.env
+    networks:
+      - test-dashboard-net
+
+  dashboard:
+    build: ./Dashboard
+    container_name: Dashboard1
+    ports:
+      - "8139:80"
+    depends_on:
+      - backend
+    networks:
+      - test-dashboard-net
+
+  forgot_password:
+    build: ./Forgot_password
+    container_name: Forgot_password1
+    ports:
+      - "8140:80"
+    depends_on:
+      - backend
+    networks:
+      - test-dashboard-net
+
+  login:
+    build: ./Login
+    container_name: Login1
+    ports:
+      - "8141:80"
+    depends_on:
+      - backend
+    networks:
+      - test-dashboard-net
+
+  sign:
+    build: ./Sign
+    container_name: Sign1
+    ports:
+      - "8142:80"
+    depends_on:
+      - backend
+    networks:
+      - test-dashboard-net
+
+volumes:
+  pgdata:
+
+networks:
+  test-dashboard-net:
+    driver: bridge
+
